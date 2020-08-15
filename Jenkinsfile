@@ -4,14 +4,22 @@ node {
         cleanWs()
         deleteDir() // Clean the workspace
         notifyBuild()
+        def user = 'stepanenkoiv'
+        def imagename = 'stepanenkoiv/mysitejenk'
+
         stage('Checkout') {
             git branch: 'master',
                 url: 'https://github.com/stepanenkoiv/mytest1.git'
+        }
 
-        }
         stage('Docker Build') {
-            sh 'docker build -t mysitejenk:1.0 -f Dockerfile.nginx .'
+            sh 'docker build -t ${imagename} -f Dockerfile.nginx .'
         }
+
+        stage('Docker Push') {
+            sh 'echo "${env.DHUBPASS}" | docker login -u ${user} --password-stdin && docker push ${imagename}'
+        }
+
     } catch (e) {
         sh 'exit 1'
         currentBuild.result = "FAILED"
