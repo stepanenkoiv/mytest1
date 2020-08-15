@@ -8,4 +8,7 @@ pipelineJob('build_docker_image') {
             scriptPath("Jenkinsfile")
         }
     }
+    parameters {
+        nonStoredPasswordParam('DHUBPASS', 'Docker-hub password for me')
+    }
 }
