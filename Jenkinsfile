@@ -1,6 +1,7 @@
 node {
     timeout(20){
     try {
+        cleanWs()
         deleteDir() // Clean the workspace
         notifyBuild()
         stage('Checkout') {
