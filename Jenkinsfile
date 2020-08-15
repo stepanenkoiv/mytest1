@@ -10,7 +10,7 @@ node {
 
         }
         stage('Docker Build') {
-            sh 'docker build -t mysite:1.0 -f Dockerfile.nginx .'
+            sh 'docker build -t mysitejenk:1.0 -f Dockerfile.nginx .'
         }
     } catch (e) {
         sh 'exit 1'
