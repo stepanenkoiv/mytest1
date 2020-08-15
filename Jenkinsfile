@@ -8,11 +8,8 @@ node {
                 url: 'https://github.com/stepanenkoiv/mytest1.git'
 
         }
-        stage('Print Hello') {
-            sh 'echo Hello world'
-        }
-        stage('Run the tests') {
-            sh 'echo "Hello. here from tests"'
+        stage('Docker Build') {
+            sh 'docker build -t mysite:1.0 -f Dockerfile.nginx .'
         }
     } catch (e) {
         sh 'exit 1'
