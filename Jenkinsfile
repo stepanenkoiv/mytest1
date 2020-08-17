@@ -6,6 +6,7 @@ node {
         notifyBuild()
         def user = 'stepanenkoiv'
         def imagename = 'stepanenkoiv/mysitejenk'
+        def pass = ${env.DHUBPASS}"
 
         stage('Checkout') {
             git branch: 'master',
@@ -13,11 +14,15 @@ node {
         }
 
         stage('Docker Build') {
-            sh 'docker build -t ${imagename} -f Dockerfile.nginx .'
+            withEnv(['IMAGE=${imagename}']) {
+               sh 'docker build -t ${IMAGE} -f Dockerfile.nginx .'
+            }
         }
 
         stage('Docker Push') {
-            sh 'echo "${env.DHUBPASS}" | docker login -u ${user} --password-stdin && docker push ${imagename}'
+            withEnv(['IMAGE=${imagename}', 'USERNAME=${user}', 'PASSWORD=${pass}']) {
+               sh 'echo "${PASSWORD}" | docker login -u ${USERNAME} --password-stdin && docker push ${IMAGE}'
+            }
         }
 
     } catch (e) {
