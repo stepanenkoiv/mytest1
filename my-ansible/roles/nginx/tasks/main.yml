@@ -1,0 +1,36 @@
+---
+- name: get service facts
+  service_facts:
+
+- name: Install nginx
+  yum:
+    name:
+        - nginx
+    state: latest
+  notify:
+    - Enable and start nginx
+  when: ansible_facts.services["nginx.service"] is not defined
+  tags:
+    - install
+
+- name: Start and enable service nginx if exists
+  service:
+      name: nginx
+      enabled: yes
+      state: started
+  when: ansible_facts.services["nginx.service"] is defined
+  tags:
+    - start
+
+- name: Copy nginx configuration file
+  template:
+     src: "{{ nginx_conf_template }}"
+     dest: "{{ nginx_conf_file_path }}"
+     owner: root
+     group: root
+     mode: 0644
+  when: ansible_facts.services["nginx.service"] is defined
+  notify:
+     - reload nginx
+  tags:
+     - config

@@ -1,0 +1,9 @@
+---
+service.s3.bucket_name: bucket1
+service.db.username: dbuser1
+service.db.name: mydb1
+service.db.host: myhost1.domain1.com
+container_name: redis
+cont_ver: 5.0.4
+cont_port: 6379
+cpu_lim: 0.1
